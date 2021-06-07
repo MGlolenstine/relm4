@@ -1,6 +1,6 @@
 use glib::Sender;
 use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, WidgetExt};
-use relm4::*;
+use relm4::{container::ContainerExt, AppUpdate, ComponentUpdate, RelmApp, RelmComponent, Widget};
 
 // Implement components that will be part of the main app
 struct Comp1Widgets {
@@ -151,12 +151,6 @@ impl Widget<AppMsg, AppModel> for AppWidgets {
 
     fn init_view(sender: Sender<AppMsg>, model: &AppModel) -> Self {
         let main = gtk::ApplicationWindowBuilder::new().build();
-        let vbox = gtk::BoxBuilder::new()
-            .orientation(gtk::Orientation::Vertical)
-            .spacing(10)
-            .margin_end(5)
-            .margin_top(5)
-            .build();
 
         let text = gtk::Label::new(Some(&model.counter.to_string()));
 
@@ -166,12 +160,17 @@ impl Widget<AppMsg, AppModel> for AppWidgets {
         let (comp1, comp1_root) = RelmComponent::create(sender.clone());
         let (comp2, comp2_root) = RelmComponent::create(sender.clone());
 
-        vbox.append(&text);
-        vbox.append(&inc_button);
-        vbox.append(&dec_button);
-
-        vbox.append(&comp1_root);
-        vbox.append(&comp2_root);
+        let vbox = gtk::BoxBuilder::new()
+            .orientation(gtk::Orientation::Vertical)
+            .spacing(10)
+            .margin_end(5)
+            .margin_top(5)
+            .build()
+            .add(&text)
+            .add(&inc_button)
+            .add(&dec_button)
+            .add(&comp1_root)
+            .add(&comp2_root);
 
         main.set_child(Some(&vbox));
 

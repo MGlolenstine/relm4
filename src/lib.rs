@@ -1,8 +1,9 @@
-use glib::Sender;
+use glib::{IsA, Sender};
 use gtk::prelude::{ApplicationExt, ApplicationExtManual, GtkWindowExt, WidgetExt};
 
 use std::marker::PhantomData;
 
+pub mod container;
 /// Relm app that runs the main application.
 /// The app consists of widgets that represents the UI and the model
 /// that stores the application state.
@@ -138,7 +139,7 @@ where
 /// widget that all other widgets are attached to.
 /// The root of the main app must be a [`gtk::ApplicationWindow`].
 pub trait Widget<Msg, Model> {
-    type Root: WidgetExt;
+    type Root: WidgetExt + IsA<gtk::Widget>;
 
     /// Initialize the UI.
     fn init_view(sender: glib::Sender<Msg>, model: &Model) -> Self;
