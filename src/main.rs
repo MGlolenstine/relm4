@@ -1,5 +1,5 @@
 use glib::Sender;
-use gtk::prelude::{BoxExt, ButtonExt, GtkWindowExt, WidgetExt};
+use gtk::prelude::{ButtonExt, GtkWindowExt, WidgetExt};
 use relm4::{container::ContainerExt, AppUpdate, ComponentUpdate, RelmApp, RelmComponent, Widget};
 
 // Implement components that will be part of the main app
@@ -160,17 +160,20 @@ impl Widget<AppMsg, AppModel> for AppWidgets {
         let (comp1, comp1_root) = RelmComponent::create(sender.clone());
         let (comp2, comp2_root) = RelmComponent::create(sender.clone());
 
-        let vbox = gtk::BoxBuilder::new()
-            .orientation(gtk::Orientation::Vertical)
-            .spacing(10)
-            .margin_end(5)
-            .margin_top(5)
-            .build()
+        let flowbox = gtk::FlowBox::new()
             .add(&text)
             .add(&inc_button)
             .add(&dec_button)
             .add(&comp1_root)
             .add(&comp2_root);
+
+        let vbox = gtk::BoxBuilder::new()
+            .orientation(gtk::Orientation::Vertical)
+            // .spacing(10)
+            .margin_end(5)
+            .margin_top(5)
+            .build()
+            .add(&flowbox);
 
         main.set_child(Some(&vbox));
 

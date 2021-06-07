@@ -1,4 +1,4 @@
-use gtk::prelude::*;
+use glib::IsA;
 
 pub trait ContainerExt {
     fn add<WIDGET: IsA<gtk::Widget>>(self, child: &WIDGET) -> Self;
@@ -7,12 +7,24 @@ pub trait ContainerExt {
 
 impl ContainerExt for gtk::Box {
     fn add<WIDGET: IsA<gtk::Widget>>(self, child: &WIDGET) -> Self {
-        self.append(child);
+        gtk::prelude::BoxExt::append(&self, child);
         self
     }
 
     fn remove<WIDGET: IsA<gtk::Widget>>(self, child: &WIDGET) -> Self {
-        BoxExt::remove(&self, child);
+        gtk::prelude::BoxExt::remove(&self, child);
+        self
+    }
+}
+
+impl ContainerExt for gtk::FlowBox {
+    fn add<WIDGET: IsA<gtk::Widget>>(self, child: &WIDGET) -> Self {
+        gtk::FlowBox::insert(&self, child, -1);
+        self
+    }
+
+    fn remove<WIDGET: IsA<gtk::Widget>>(self, child: &WIDGET) -> Self {
+        gtk::FlowBox::remove(&self, child);
         self
     }
 }
