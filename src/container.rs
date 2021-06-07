@@ -1,7 +1,11 @@
 use glib::IsA;
 
+/// Container trait, that adds generic `add` and `remove` functions.
+/// Every container has their own functions and this trait generalizes them.
 pub trait ContainerExt {
+    /// Add widget to the Container
     fn add<WIDGET: IsA<gtk::Widget>>(self, child: &WIDGET) -> Self;
+    /// Remove specified widget from the Container
     fn remove<WIDGET: IsA<gtk::Widget>>(self, child: &WIDGET) -> Self;
 }
 
