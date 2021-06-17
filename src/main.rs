@@ -225,6 +225,7 @@ impl AppUpdate<AppMsg> for AppModel {
 
 fn main() {
     gtk::init().unwrap();
-    let relm: RelmApp<AppWidgets, AppModel, AppMsg> = RelmApp::create();
+    let relm: RelmApp<AppWidgets, AppModel, AppMsg> =
+        RelmApp::create_with_model(AppModel { counter: 42 });
     relm.run();
 }

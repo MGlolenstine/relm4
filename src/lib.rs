@@ -1,5 +1,8 @@
-use glib::Sender;
-use gtk::prelude::{ApplicationExt, ApplicationExtManual, GtkWindowExt, WidgetExt};
+use glib::{IsA, Sender};
+use gtk::{
+    gio::MenuModel,
+    prelude::{ApplicationExt, ApplicationExtManual, GtkApplicationExt, GtkWindowExt, WidgetExt},
+};
 
 use std::marker::PhantomData;
 
@@ -34,10 +37,14 @@ where
 
     /// Create an application.
     pub fn create() -> Self {
+        let model = Model::init_model();
+        Self::create_with_model(model)
+    }
+
+    /// Create an application.
+    pub fn create_with_model(mut model: Model) -> Self {
         let app = gtk::ApplicationBuilder::new().build();
         let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-
-        let mut model = Model::init_model();
 
         let mut widgets: Widgets = Widgets::init_view(sender.clone(), &model);
         let root = widgets.root_widget();
@@ -68,6 +75,10 @@ where
             sender,
             app,
         }
+    }
+
+    pub fn set_menubar<P: IsA<MenuModel>>(&self, menubar: Option<&P>) {
+        self.app.set_menubar(menubar);
     }
 }
 
