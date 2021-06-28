@@ -3,6 +3,7 @@ use gtk::{
     gio::MenuModel,
     prelude::{ApplicationExt, ApplicationExtManual, GtkApplicationExt, GtkWindowExt, WidgetExt},
 };
+use gtk4 as gtk;
 
 use std::marker::PhantomData;
 
